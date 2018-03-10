@@ -1,0 +1,26 @@
+version: '2'
+services:
+  php-apache:
+    build: .
+    ports:
+      - "80:80"
+      - "443:433"
+    volumes:
+      - ./www:/var/www
+      - ./logs:/var/log
+    links:
+      - mysql
+    networks:
+      - default
+
+  mysql:
+    image: mysql
+    ports:
+      - "33061:3306"
+      - "3306:3306"
+    volumes:
+      - ./mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+    networks:
+      - default
