@@ -14,7 +14,9 @@ Docker instance with last version of Apache, MySQL and PHP.
 ## Running
 
 Clone the repository.
+
 Add sites into virtual_sites folder.
+
 Run the following command.
 
 ```sh
