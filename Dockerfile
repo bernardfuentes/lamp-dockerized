@@ -10,17 +10,18 @@ RUN docker-php-ext-enable xdebug
 VOLUME /var/www
 VOLUME /var/log
 
+WORKDIR /var/www
+
 RUN echo 'ServerName localhost' >> /etc/apache2/apache2.conf
 
-COPY conf/php.ini /usr/local/etc/php/php.ini
+COPY ./conf/php.ini /usr/local/etc/php/php.ini
 
-COPY index.php /var/www
+COPY ./www/index.php /var/www
 
-COPY /virtual_sites/001-indigenous.conf /etc/apache2/sites-available/
-COPY /virtual_sites/000-default.conf /etc/apache2/sites-available/
-RUN a2ensite 000-default.conf
-RUN a2ensite 001-indigenous.conf
+ADD ./sites-available/*.conf /etc/apache2/sites-available/
 
 RUN a2enmod rewrite
 
-WORKDIR /var/www
+COPY ./scripts/a2ensites.sh /a2ensites.sh
+RUN chmod +x /a2ensites.sh
+RUN /a2ensites.sh && rm /a2ensites.sh
