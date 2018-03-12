@@ -6,28 +6,26 @@ else
         mkdir /etc/apache2/sites-enabled
 fi
 
-avail=/etc/apache2/sites-available/$1.conf
+
 enabled=/etc/apache2/sites-enabled/
 site=`ls /etc/apache2/sites-available/`
 
-if [ "$#" != "1" ]; then
-        echo "Use script: a2ensite virtual_site"
-        echo -e "\nAvailable virtual hosts:\n$site"
-        exit 0
-else
+for file in /etc/apache2/sites-available/*.conf;
+  do
+    avail="/etc/apache2/sites-available/$(basename $file)"
+    enabled="/etc/apache2/sites-enabled/$(basename $file)"
+    if test -e $avail; then
+            ln -s $avail $enabled
+    else
+            echo -e "$avail virtual host does not exist! Please create one!\n"
+            exit 0
+    fi
+    if test -e $enabled; then
 
-        if test -e $avail; then
-                sudo ln -s $avail $enabled
-        else
-                echo -e "$avail virtual host does not exist! Please create one!\n$site"
-                exit 0
-        fi
-        if test -e $enabled/$1.conf; then
-
-                echo "Success!! Now restart Apache server: sudo service apache2 restart"
-                sudo service apache2 restart
-        else
-                echo  -e "Virtual host $avail does not exist!\nPlease see available virtual hosts:\n$site"
-                exit 0
-        fi
-fi
+            echo "Success!! Now restart Apache server: sudo service apache2 restart"
+            service apache2 restart
+    else
+            echo  -e "Virtual host $avail does not exist!\nPlease see available virtual hosts:\n"
+            exit 0
+    fi
+  done

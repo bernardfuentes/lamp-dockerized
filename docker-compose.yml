@@ -6,8 +6,8 @@ services:
       - "80:80"
       - "443:433"
     volumes:
-      - ./www:/var/www
-      - ./logs:/var/log
+      - /home/bernard/Dev/external:/var/www
+      - /home/bernard/Backup/Docker/Volumes/logs:/var/log
     links:
       - mysql
     networks:
@@ -16,10 +16,9 @@ services:
   mysql:
     image: mysql
     ports:
-      - "33061:3306"
       - "3306:3306"
     volumes:
-      - ./mysql:/var/lib/mysql
+      - /home/bernard/Backup/Docker/Volumes/mysql:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: password
     networks:
