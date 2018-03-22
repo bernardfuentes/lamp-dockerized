@@ -16,6 +16,7 @@ services:
   mysql:
     image: mysql
     ports:
+      - "33061:3306"
       - "3306:3306"
     volumes:
       - /home/bernard/Backup/Docker/Volumes/mysql:/var/lib/mysql
